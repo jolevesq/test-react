@@ -17,10 +17,19 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "custom.d.ts", "tests/setupTests.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
