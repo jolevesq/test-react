@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import TopContent from '../app/components/TopContent';
+import TopContent from '../src/components/TopContent';
 
 test('Check the content', () => {
     const component = renderer.create(<TopContent title="Title" subtitle="Subtitle" text="Text" />);

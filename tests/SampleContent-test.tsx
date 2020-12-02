@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import SampleContent from '../app/components/SampleContent';
+import SampleContent from '../src/components/SampleContent';
 
 test('Check the content', () => {
     const component = renderer.create(<SampleContent title="Title" subtitle="Subtitle" text="Text" />);
