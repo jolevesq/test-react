@@ -1,15 +1,15 @@
 {
   "presets": [
-    "@babel/preset-react",
+    ["@babel/preset-react", {
+        "runtime": "automatic"
+    }],
     [
       "@babel/preset-env",
       {
         "targets": [
           "last 2 Chrome versions",
           "last 2 Safari versions",
-          "last 2 Firefox versions",
-          "ie 11",
-          "cover 85% in US"
+          "last 2 Firefox versions"
         ]
       }
     ],
