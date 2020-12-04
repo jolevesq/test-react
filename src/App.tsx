@@ -10,7 +10,8 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import TopContainer from './components/TopContainer';
 
 import Map from './components/map/map';
-import { ExternalStateExample } from './components/map2';
+import { RenderMe } from './components/map/map2';
+import { createMap } from './components/map/mapVanilla';
 
 import '../node_modules/leaflet/dist/leaflet.css';
 
@@ -37,6 +38,9 @@ const maps: Element[] = [...document.getElementsByClassName('llwb-map')];
 [...maps].forEach((map: Element, index: number) => {
     // const mapElement = new Map(configs[index]);
     // render(mapElement.render(), map);
-    const mapElement = ExternalStateExample();
-    render(mapElement, map);
+    // const mapElement = ExternalStateExample();
+    // render(mapElement, map);
 });
+
+RenderMe();
+createMap();
