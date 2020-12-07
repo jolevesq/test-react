@@ -9,6 +9,14 @@ body {
 .leaflet-container {
     width: 90%;
     margin: auto;
-    height: 100vh;
+    height: 700px;
     display: flex;
+}
+
+.cgp-appbar {
+    height: 100%;;
+}
+
+.MuiDrawer-paper {
+    position: relative !important;
 }

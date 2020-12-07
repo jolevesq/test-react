@@ -4,9 +4,10 @@ import { Component, useState, useCallback, useMemo, useEffect } from 'react';
 import { render } from 'react-dom';
 
 import { LatLngTuple, Map } from 'leaflet';
-import { MapContainer, TileLayer, ScaleControl, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, ScaleControl, Marker, useMapEvents, ZoomControl } from 'react-leaflet';
 
 import PropTypes from 'prop-types';
+import { ContactSupportOutlined } from '@material-ui/icons';
 
 const center: LatLngTuple = [51.505, -0.09];
 const zoom = 13;
@@ -40,6 +41,12 @@ function DisplayPosition({ map }) {
         };
     }, [map, onZoom]);
 
+    useMapEvents({
+        move: () => {
+          console.log('I moved');
+        },
+    });
+
     return (
         <p>
             latitude: {position.lat.toFixed(4)}, longitude: {position.lng.toFixed(4)}{' '}
@@ -50,7 +57,7 @@ function DisplayPosition({ map }) {
     );
 }
 
-export function ExternalStateExample() {
+export function ExternalStateExample(): JSX.Element {
     const [map, setMap] = useState(null);
 
     const displayMap = useMemo(
@@ -60,6 +67,9 @@ export function ExternalStateExample() {
                 zoom={zoom}
                 scrollWheelZoom={false}
                 whenCreated={setMap}
+                whenReady={() => {
+                    console.log('ready');
+                }}
                 eventHandlers={{
                     click: () => {
                         console.log('marker clicked');
@@ -73,6 +83,7 @@ export function ExternalStateExample() {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <ZoomControl position="bottomleft" />
                 <ScaleControl position="bottomleft" imperial={false} />
             </MapContainer>
         ),
@@ -87,6 +98,6 @@ export function ExternalStateExample() {
     );
 }
 
-export function RenderMe() {
+export function RenderMe(): void {
     render(<ExternalStateExample />, document.getElementById('root'));
 }
