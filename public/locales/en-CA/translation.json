@@ -1,22 +1,26 @@
 {
     "close": "Close",
-
-    "appbar": {
-        "sidemenu": "Show side menu",
-        "layers": "Show layers"
-    },
     "mapnav": {
+        "ariaNavbar": "vertical button group for map navigation",
         "fullscreen": "Full Screen",
         "home": "Home",
         "zoomIn": "Zoom in",
-        "zoomOut": "zoom out"
+        "zoomOut": "Zoom out"
     },
-    "sidemenu": {
+    "mapctrl": {
+        "mouseposition": {
+            "east": "E",
+            "west": "W",
+            "north": "N",
+            "south": "S"
+        }
+    },
+    "appbar": {
         "export": "Export",
         "fullscreen": "Full Screen",
         "help": "Help",
         "layers": "Layers",
         "share": "Share",
-        "logotext": "Web Presence"
+        "version": "Access GitHub repo"
     }
 }

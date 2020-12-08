@@ -7,18 +7,42 @@
  * @class Basemap
  */
 export class Basemap {
+    private language = '';
+
+    constructor(language: string) {
+        this.language = language;
+    }
+
+    // LCC url's
+    private lccUrls: string[] = [
+        'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/CBMT_CBCT_GEOM_3978/MapServer/WMTS/tile/1.0.0/CBMT_CBCT_GEOM_3978/default/default028mm/{z}/{y}/{x}.jpg',
+        'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/xxxx_TXT_3978/MapServer/WMTS/tile/1.0.0/xxxx_TXT_3978/default/default028mm/{z}/{y}/{x}.jpg',
+    ];
+
+    // Web Mercator url's
+    private wbUrls: string[] = [
+        'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/CBMT_CBCT_GEOM_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_CBCT_GEOM_3857/default/default028mm/{z}/{y}/{x}.jpg',
+        'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/xxxx_TXT_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_xxxx_TXT_3857/default/default028mm/{z}/{y}/{x}.png',
+    ];
+
+    private basemapConfig: BasemapConfig = {
+        tms: false,
+        tileSize: 256,
+        attribution: false,
+        noWrap: false,
+    };
+
     // LCC basemap options
     private lccParamCBMT: BasemapOptions[] = [
         {
-            id: 'lccCBMT',
-            url:
-                'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/CBMT3978/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT3978/default/default028mm/{z}/{y}/{x}.jpg',
-            options: {
-                tms: false,
-                tileSize: 256,
-                attribution: false,
-                noWrap: false,
-            },
+            id: 'lccGeomCBMT',
+            url: this.lccUrls[0],
+            options: this.basemapConfig,
+        },
+        {
+            id: 'lccLabelCBMT',
+            url: this.lccUrls[1],
+            options: this.basemapConfig,
         },
     ];
 
@@ -26,25 +50,13 @@ export class Basemap {
     private wmParamCBMT: BasemapOptions[] = [
         {
             id: 'wmGeomCBMT',
-            url:
-                'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/CBMT_CBCT_GEOM_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_CBCT_GEOM_3857/default/default028mm/{z}/{y}/{x}.jpg',
-            options: {
-                tms: false,
-                tileSize: 256,
-                attribution: false,
-                noWrap: true,
-            },
+            url: this.wbUrls[0],
+            options: this.basemapConfig,
         },
         {
             id: 'wmLabelCBMT',
-            url:
-                'https://geoappext.nrcan.gc.ca/arcgis/rest/services/BaseMaps/CBMT_TXT_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_TXT_3857/default/default028mm/{z}/{y}/{x}.png',
-            options: {
-                tms: false,
-                tileSize: 256,
-                attribution: false,
-                noWrap: true,
-            },
+            url: this.wbUrls[1],
+            options: this.basemapConfig,
         },
     ];
 
@@ -55,20 +67,27 @@ export class Basemap {
     };
 
     get lccCBMT(): BasemapOptions[] {
+        // get proper label url
+        this.lccParamCBMT[1].url =
+            this.language === 'en-CA'
+                ? this.lccParamCBMT[1].url.replaceAll('xxxx', 'CBMT')
+                : this.lccParamCBMT[1].url.replaceAll('xxxx', 'CBCT');
         return this.lccParamCBMT;
     }
 
     get wmCBMT(): BasemapOptions[] {
+        // get proper label url
+        this.wmParamCBMT[1].url =
+            this.language === 'en-CA'
+                ? this.wmParamCBMT[1].url.replaceAll('xxxx', 'CBMT')
+                : this.wmParamCBMT[1].url.replaceAll('xxxx', 'CBCT');
+
         return this.wmParamCBMT;
     }
 
     get attribution(): Attribution {
         return this.attributionVal;
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    // eslint-disable-next-line no-useless-constructor
-    constructor() {}
 }
 
 interface BasemapConfig {

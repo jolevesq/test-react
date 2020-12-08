@@ -1,30 +1,25 @@
-import React from 'react';
+import { useState, useRef, useEffect } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import { Drawer, List, Divider, IconButton, Tooltip, Fade } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import GitHubIcon from '@material-ui/icons/GitHub';
 
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { DomEvent } from 'leaflet';
 
-import LayersApp from './buttons/layers-app';
-import AppButton from './button';
+import Layers from './buttons/layers';
+import Version from './buttons/version';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         height: '100%',
-    },
-    hide: {
-        display: 'none',
+        width: '60px',
+        border: '2px solid rgba(0, 0, 0, 0.2)',
     },
     drawer: {
         width: drawerWidth,
@@ -44,10 +39,7 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
+        width: '61px',
     },
     toolbar: {
         display: 'flex',
@@ -55,53 +47,66 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-end',
         padding: theme.spacing(0, 1),
     },
-    content: {
+    spacer: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        backgroundColor: 'white',
+    },
+    githubSection: {
+        paddingBottom: '30px',
     },
 }));
 
-export function MiniDrawer(props): JSX.Element {
-    const {id, map} = props;
-
+export function Appbar(props: AppBarProps): JSX.Element {
+    const { id } = props;
+    const { t } = useTranslation();
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+
+    const appBar = useRef();
+    useEffect(() => {
+        // disable events on container
+        DomEvent.disableClickPropagation(appBar.current.children[0] as HTMLElement);
+        DomEvent.disableScrollPropagation(appBar.current.children[0] as HTMLElement);
+    }, []);
+
+    const [open, setOpen] = useState(false);
 
     // side menu items
     // const items = [{ divider: true }, { id: 'layers' }, { divider: true }, { id: 'fullscreen' }, { id: 'help' }];
-    const items = [{ id: 'layers' }];
+    const items = [{ id: 'legend' }];
 
     const handleDrawerClose = () => {
         setOpen(!open);
     };
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
+        <div className={classes.root} ref={appBar}>
             <Drawer
                 variant="permanent"
                 className={open ? classes.drawerOpen : classes.drawerClose}
                 classes={{ paper: open ? classes.drawerOpen : classes.drawerClose }}
             >
                 <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>{!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
+                    <Tooltip title={t('close')} placement="right" TransitionComponent={Fade}>
+                        <IconButton onClick={handleDrawerClose}>{!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
+                    </Tooltip>
                 </div>
                 <Divider />
                 <List>
                     {items.map((item) => (
-                        <LayersApp key={`${id}-${item.id}`} id={item.id} />
+                        <Layers key={`${id}-${item.id}`} />
                     ))}
                 </List>
+                <Divider className={classes.spacer} />
                 <Divider />
-                <List>
-                    <ListItem button key={`${id}-giVersion`}>
-                        <ListItemIcon>
-                            <GitHubIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="une balade" />
-                    </ListItem>
+                <List className={classes.githubSection}>
+                    <Version />
                 </List>
             </Drawer>
+            <div className="cgp-apppanel" />
         </div>
     );
+}
+
+interface AppBarProps {
+    id: string;
 }

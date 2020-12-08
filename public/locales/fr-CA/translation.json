@@ -1,22 +1,26 @@
 {
     "close": "Fermer",
-
-    "appbar": {
-        "sidemenu": "Afficher le menu de côté",
-        "layers": "Afficher les couches"
-    },
     "mapnav": {
+        "ariaNavbar": "groupe de buttons vertical pour navigation sur la carte",
         "fullscreen": "Plein Écran",
         "home": "Maison",
         "zoomIn": "Zoom avant",
-        "zoomOut": "zoom arrière"
+        "zoomOut": "Zoom arrière"
     },
-    "sidemenu": {
+    "mapctrl": {
+        "mouseposition": {
+            "east": "E",
+            "west": "O",
+            "north": "N",
+            "south": "S"
+        }
+    },
+    "appbar": {
         "export": "Exporter",
         "fullscreen": "Plein écran",
         "help": "Aide",
         "layers": "Couches",
         "share": "Partager",
-        "logotext": "Présence web"
+        "version": "Accéder au repo sur GitHub"
     }
 }
