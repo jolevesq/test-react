@@ -11,7 +11,7 @@ export default function LayersApp(props: ButtonProps): JSX.Element {
     }
 
     return (
-        <ListItem button key={id} onClick={handleclick}>
+        <ListItem onClick={handleclick}>
             <ListItemIcon>
                 <LayersIcon />
             </ListItemIcon>

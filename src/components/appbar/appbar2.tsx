@@ -61,7 +61,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function MiniDrawer(): JSX.Element {
+export function MiniDrawer(props): JSX.Element {
+    const {id, map} = props;
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -87,12 +89,12 @@ export function MiniDrawer(): JSX.Element {
                 <Divider />
                 <List>
                     {items.map((item) => (
-                        <LayersApp id={item.id} />
+                        <LayersApp key={`${id}-${item.id}`} id={item.id} />
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key="gitHubVersion">
+                    <ListItem button key={`${id}-giVersion`}>
                         <ListItemIcon>
                             <GitHubIcon />
                         </ListItemIcon>

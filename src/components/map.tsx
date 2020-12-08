@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { render } from 'react-dom';
 
 import { LatLngTuple, CRS } from 'leaflet';
-import { MapContainer, TileLayer, ZoomControl, ScaleControl, AttributionControl } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl, ScaleControl, AttributionControl, useMap } from 'react-leaflet';
 
 import { Basemap, BasemapOptions } from '../common/basemap';
 import { Projection } from '../common/projection';
@@ -9,7 +10,10 @@ import { VerticalTabs } from './appbar/appbar';
 import { MiniDrawer } from './appbar/appbar2';
 
 function Map(props: MapProps): JSX.Element {
-    const { center, zoom, projection, language } = props;
+    const { id, center, zoom, projection, language } = props;
+
+    // const parentMap = useMap();
+    const [map, setMap] = useState(null);
 
     // get the needed projection. Web Mercator is out of the box but we need to create LCC
     // the projection will work with CBMT basemap. If another basemap would be use, update...
@@ -20,18 +24,20 @@ function Map(props: MapProps): JSX.Element {
 
     const attribution = language === 'en-CA' ? basemap.attribution['en-CA'] : basemap.attribution['fr-CA'];
 
-    const tabs = VerticalTabs();
-    const drawer = MiniDrawer();
+    //  tabs = VerticalTabs();
+    // const drawer = MiniDrawer();
 
     return (
-        <MapContainer center={center} zoom={zoom} crs={crs} zoomControl={false} attributionControl={false}>
+        <MapContainer center={center} zoom={zoom} crs={crs} zoomControl={false} attributionControl={false} whenCreated={setMap}>
             {basemaps.map((base) => (
                 <TileLayer key={base.id} url={base.url} attribution={attribution} />
             ))}
             <ZoomControl position="bottomright" />
             <ScaleControl position="bottomright" imperial={false} />
             <AttributionControl position="bottomleft" />
-            <div className="leaflet-control leaflet-bar cgp-appbar">{drawer}</div>
+            <div className="leaflet-control leaflet-bar cgp-appbar">
+                <MiniDrawer id={id} map={map} />
+            </div>
         </MapContainer>
     );
 }
@@ -39,7 +45,7 @@ function Map(props: MapProps): JSX.Element {
 export function createMap(element: Element, config: MapConfig): void {
     const center: LatLngTuple = [config.lat, config.lng];
 
-    render(<Map center={center} zoom={config.zoom} projection={config.projection} language={config.language} />, element);
+    render(<Map id={element.id} center={center} zoom={config.zoom} projection={config.projection} language={config.language} />, element);
 }
 
 interface MapConfig {
@@ -51,6 +57,7 @@ interface MapConfig {
 }
 
 interface MapProps {
+    id: string;
     center: LatLngTuple;
     zoom: number;
     projection: number;
